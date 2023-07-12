@@ -69,17 +69,20 @@ OS=$(uname -s)
 ARCH=$(uname -m)
 
 if [ "${OS}" = "Linux" ]; then
-    alias gx1="g++ -O3 -c -fpic -fopenmp "
-    alias gx2="g++ -O3 -shared -fopenmp "
+    alias gx1="g++ -O3 -c -fpic  "
+    alias gx2="g++ -O3 -shared  "
 elif [ "${OS}" = "Darwin" ]; then
     if [ "${ARCH}" = "arm64" ]; then
-        compiler="/opt/homebrew/opt/llvm/bin/clang++"
+        # compiler="/opt/homebrew/opt/llvm/bin/clang++"
+        compiler="/usr/bin/clang++"
     else
-        compiler="/usr/local/opt/llvm/bin/clang++"
+        # compiler="/usr/local/opt/llvm/bin/clang++"
+        compiler="/usr/bin/clang++"
+        
     fi
-    alias gx1="${compiler} -O3 -c -fpic -fopenmp "
-    alias gx2="${compiler} -O3 -shared -fopenmp "
-    alias gx="${compiler} -O3 -fpic -shared -fopenmp "
+    alias gx1="${compiler} -O3 -c -fpic  "
+    alias gx2="${compiler} -O3 -shared  "
+    alias gx="${compiler} -O3 -fpic -shared  "
 else
     echo "Unsupported OS"
     exit -1

@@ -21,27 +21,28 @@ if [ "${OS}" = "Linux" ]; then
 
     NURBS_SCRIPT="setup_linux.py"
 elif [ "${OS}" = "Darwin" ]; then
-    if [ "${ARCH}" = "arm64" ]; then
-        BLENDER_WGET_LINK='https://download.blender.org/release/Blender3.3/blender-3.3.1-macos-arm64.dmg'
-        NURBS_SCRIPT="setup_macos_as.py"
-    else
-        BLENDER_WGET_LINK='https://download.blender.org/release/Blender3.3/blender-3.3.1-macos-x64.dmg'
-        NURBS_SCRIPT="setup_macos.py"
-    fi
-    if [ "${ARCH}" = "arm64" ]; then
-        HOMEBREW_PREFIX="/opt/homebrew/"
-    else
-        HOMEBREW_PREFIX="/usr/local"
-    fi
-    BLENDER_WGET_FILE='blender.dmg'
+    # if [ "${ARCH}" = "arm64" ]; then
+    #     BLENDER_WGET_LINK='https://download.blender.org/release/Blender3.3/blender-3.3.1-macos-arm64.dmg'
+    #     NURBS_SCRIPT="setup_macos_as.py"
+    # else
+    #     BLENDER_WGET_LINK='https://download.blender.org/release/Blender3.3/blender-3.3.1-macos-x64.dmg'
+    #     NURBS_SCRIPT="setup_macos.py"
+    # fi
+    # if [ "${ARCH}" = "arm64" ]; then
+    #     HOMEBREW_PREFIX="/opt/homebrew/"
+    # else
+    #     HOMEBREW_PREFIX="/usr/local"
+    # fi
+    # BLENDER_WGET_FILE='blender.dmg'
 
-    BLENDER_VOLM='/Volumes/Blender'
+    # BLENDER_VOLM='/Volumes/Blender'
     BLENDER_DIR='./Blender.app'
     BLENDER_PYTHON="${BLENDER_DIR}/Contents/Resources/3.3/python/bin/python3.10"
     BLENDER_INCLUDE="${BLENDER_DIR}/Contents/Resources/3.3/python/include/python3.10"
     BLENDER_PACKAGES="${BLENDER_DIR}/Contents/Resources/3.3/python/lib/python3.10/site-packages"
 
-    export CC="${HOMEBREW_PREFIX}/opt/llvm/bin/clang"
+    # export CC="${HOMEBREW_PREFIX}/opt/llvm/bin/clang"
+    export CC="/usr/bin/clang"
     export CPATH="${HOMEBREW_PREFIX}/include:${CPATH}"
 else
     echo "Unsupported OS"
@@ -55,27 +56,27 @@ PYTHON_DIR='Python-3.10.2'
 git submodule init
 git submodule update
 
-if [ ! -d "${BLENDER_DIR}" ]; then
-    # Download Blender
-    wget -O "${BLENDER_WGET_FILE}" "${BLENDER_WGET_LINK}"
+# if [ ! -d "${BLENDER_DIR}" ]; then
+#     # Download Blender
+#     wget -O "${BLENDER_WGET_FILE}" "${BLENDER_WGET_LINK}"
 
-    # Unzip Blender
-    if [ "${OS}" = "Darwin" ]; then
-        hdiutil attach "${BLENDER_WGET_FILE}"
-        cp -r "${BLENDER_VOLM}/Blender.app" "${BLENDER_DIR}"
-        hdiutil detach "${BLENDER_VOLM}"
-    else
-        tar -xf "${BLENDER_WGET_FILE}"
-        mv "${BLENDER_UNTAR_DIR}" "${BLENDER_DIR}"
-    fi
+#     # Unzip Blender
+#     if [ "${OS}" = "Darwin" ]; then
+#         hdiutil attach "${BLENDER_WGET_FILE}"
+#         cp -r "${BLENDER_VOLM}/Blender.app" "${BLENDER_DIR}"
+#         hdiutil detach "${BLENDER_VOLM}"
+#     else
+#         tar -xf "${BLENDER_WGET_FILE}"
+#         mv "${BLENDER_UNTAR_DIR}" "${BLENDER_DIR}"
+#     fi
 
-    rm "${BLENDER_WGET_FILE}"
-fi
+#     rm "${BLENDER_WGET_FILE}"
+# fi
 
-# Install llvm for MacOS
-if [ "${OS}" = "Darwin" ]; then
-    brew install llvm open-mpi libomp glm glew
-fi
+# # Install llvm for MacOS
+# if [ "${OS}" = "Darwin" ]; then
+#     brew install llvm open-mpi libomp glm glew
+# fi
 
 # Install Conda dependencies
 pip install -r "${REQUIREMENTS_PATH}"
